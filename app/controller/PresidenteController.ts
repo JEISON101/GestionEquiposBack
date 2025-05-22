@@ -4,13 +4,13 @@ import { HttpContext } from "@adonisjs/core/http";
 export default class PresidenteController {
 
     async getPresidentes({response}:HttpContext){
-        const presidentes = await client.query(`SELECT * FROM presidente ORDER BY id_equipo ASC `)
-        return response.status(200).json({presidentes})
+        const presidentes = await client.query(`SELECT * FROM presidente ORDER BY dni ASC `)
+        return response.status(200).json({datos:presidentes.rows})
     }
 
     async postPresidente({request, response}: HttpContext){
         const {id_equipo, dni, nombre} = request.body()
-        await client.query(`INSET INTO presidente (id_equipo, dni, nombre) VALUES ($1, $2, $3)`,[id_equipo, dni, nombre])
+        await client.query(`INSERT INTO presidente (id_equipo, dni, nombre) VALUES ($1, $2, $3)`,[id_equipo, dni, nombre])
         return response.status(200).json({mensaje:'PRESIDENTE INSERTADO EXITOSAMENTE'})
     }
 

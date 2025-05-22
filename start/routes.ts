@@ -17,8 +17,8 @@ const presidenteController = new PresidenteController
 //rutas de presidente
 router.get('/presidentes', presidenteController.getPresidentes)
 router.post('/presidente', presidenteController.postPresidente)
-router.put('/presidente/:id', presidenteController.putPresidente)
-router.delete('/presidente/:id', presidenteController.deletePresidente)
+router.put('/presidente/:dni', presidenteController.putPresidente)
+router.delete('/presidente/:dni', presidenteController.deletePresidente)
 
 //instancia de la clase EquipoController
 const equipoController = new EquiposController 
