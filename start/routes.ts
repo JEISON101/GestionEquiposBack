@@ -8,9 +8,13 @@
 */
 
 import router from '@adonisjs/core/services/router'
+import PresidenteController from '../app/controller/PresidenteController.js'
 
-router.get('/', async () => {
-  return {
-    hello: 'world',
-  }
-})
+//instacia de la clase PresidenteController
+const presidenteController = new PresidenteController
+
+//rutas de presidente
+router.get('/presidentes', presidenteController.getPresidentes)
+router.post('/presidente', presidenteController.postPresidente)
+router.put('/presidente/:id', presidenteController.putPresidente)
+router.delete('/presidente/:id', presidenteController.deletePresidente)
