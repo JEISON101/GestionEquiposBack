@@ -1,4 +1,4 @@
-import client from "../database/pgDatabase.js";
+import client from "../database/pgDatabase.js" 
 import { HttpContext } from "@adonisjs/core/http";
 
 export default class EquiposController{
@@ -23,11 +23,12 @@ export default class EquiposController{
         return response.json({mensaje: 'Se actualizo el equipo'})   
     }
 
-    async deleteEquipo({params,response}:HttpContext){
-        const  {id} = params.id
-        const result = await client.query('delete from equipo where id_equipo=$1',[id])
-        return response.json({mensaje: 'El equipo se ha eliminado exitosamente'})
-    }
+    async deleteEquipo({ params, response }: HttpContext) {
+    const { id } = params;
+    await client.query('DELETE FROM equipo WHERE id_equipo = $1', [id]);
+    return response.json({ mensaje: 'El equipo se ha eliminado exitosamente' });
+}
+
 
     async getEquipoPresidente({response}:HttpContext){
         const result = await client.query('select * from equipo where id_equipo not in (select id_equipo from presidente)')
