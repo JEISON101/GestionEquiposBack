@@ -5,10 +5,10 @@ import client from "../database/PgDatabase.js";
 export class AuthUsuariosController {
 
     async register({ request, response }: HttpContext) {
-        const { email, password } = request.body();
-        const passwordEncriptada = await hash.make(password)
+        const { nombre, correo, direccion, telefono, contrasena } = request.body();
+        const passwordEncriptada = await hash.make(contrasena)
         try {
-            await client.query(`INSERT INTO usuarios(email, password) VALUES ($1, $2)`, [email, passwordEncriptada])
+            await client.query(`INSERT INTO usuarios(nombre, correo, direccion, telefono, contrasena) VALUES ($1, $2, $3, $4, $5)`, [nombre, correo, direccion, telefono, passwordEncriptada])
             return response.json({ mensaje: 'USUARIO REGISTRADO EXITOSAMENTE' })
         } catch (error) {
             return response.json({ mensaje: 'EL USUARIO NO SE PUDO REGISTRAR' })
@@ -16,10 +16,10 @@ export class AuthUsuariosController {
     }
 
     async login({ request, response }: HttpContext) {
-        const { email, password } = request.body();
-        const res = await client.query(`SELECT * FROM usuarios WHERE email = $1`, [email])
+        const { correo, contrasena } = request.body();
+        const res = await client.query(`SELECT * FROM usuarios WHERE correo = $1`, [correo])
         if(res.rows.length > 0){
-            const valid = await hash.verify(res.rows[0].password, password)
+            const valid = await hash.verify(res.rows[0].contrasena, contrasena)  
             if(valid){
                 return response.json({ mensaje:'USUARIO LOGUEADO CORRECTAMENTE', valid:valid})
             }else{
