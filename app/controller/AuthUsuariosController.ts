@@ -21,12 +21,13 @@ export class AuthUsuariosController {
         if(res.rows.length > 0){
             const valid = await hash.verify(res.rows[0].contrasena, contrasena)  
             if(valid){
-                return response.json({ mensaje:'USUARIO LOGUEADO CORRECTAMENTE', valid:valid})
+                const name = client.query("SELECT nombre FROM usuarios WHERE correo = $1", [correo])
+                return response.json({ mensaje:'USUARIO LOGUEADO CORRECTAMENTE', valid:valid, nombre:(await name).rows[0].nombre})
             }else{
                 return response.json({ mensaje:'CREDENCIALES INCORRECTAS', valid:valid})
             }
         }else{
-            return response.json({ mensaje:'USUARIO NO REGISTRADO'})
+            return response.json({ mensaje:'No hay usuarios registrados con este correo'})
         }
     }
 }
